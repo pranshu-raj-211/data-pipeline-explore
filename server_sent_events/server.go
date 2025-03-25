@@ -6,12 +6,15 @@ import (
 	"time"
 )
 
+// TODO: Understand how http streaming and sse are different
+
 func sseHandler(w http.ResponseWriter, r *http.Request) {
 	// set correct response headers
 	w.Header().Set("Content-Type", "text/event-stream")
 	w.Header().Set("Cache-Control", "no-cache")
 	w.Header().Set("Connection", "keep-alive")
 
+	// cors
 	w.Header().Set("Access-Control-Allow-Origin", "*")
 
 	// what is this ticket
@@ -37,6 +40,6 @@ func main() {
 	http.HandleFunc("/events", sseHandler)
 
 	if err := http.ListenAndServe(":8080", nil); err == nil {
-		log.Fatal("Couldn't start server, error: $s", err.Error())
+		log.Fatal("Couldn't start server, error: $s", err)
 	}
 }
